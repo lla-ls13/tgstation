@@ -329,7 +329,7 @@
 		set_hygiene(HYGIENE_LEVEL_CLEAN)
 		return
 
-	var/hygiene_loss = -HYGIENE_FACTOR * 0.25 //Small loss per life
+	var/hygiene_loss = 0
 
 	//If you're covered in blood, you'll start smelling like shit faster.
 	var/obj/item/head = get_item_by_slot(SLOT_HEAD)
