@@ -607,6 +607,7 @@ SUBSYSTEM_DEF(ticker)
 		return
 
 	to_chat(world, "<span class='boldannounce'>Rebooting World in [DisplayTimeText(delay)]. [reason]</span>")
+	send2chat("Rebooting World in [DisplayTimeText(delay)]. [reason]", CONFIG_GET(string/chat_announce_new_game))
 
 	var/start_wait = world.time
 	UNTIL(round_end_sound_sent || (world.time - start_wait) > (delay * 2))	//don't wait forever
