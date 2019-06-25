@@ -10,6 +10,7 @@
 	var/list/networks = list("ss13")
 	var/datum/action/innate/camera_off/off_action = new
 	var/datum/action/innate/camera_jump/jump_action = new
+	var/datum/action/innate/camera_acceleration/accelerate = new
 	var/list/actions = list()
 
 	light_color = LIGHT_COLOR_RED
@@ -47,9 +48,14 @@
 		jump_action.Grant(user)
 		actions += jump_action
 
+	if(accelerate)
+		accelerate.target = user
+		accelerate.Grant(user)
+		actions += accelerate
+
 /obj/machinery/proc/remove_eye_control(mob/living/user)
 	CRASH("[type] does not implement ai eye handling")
-	
+
 /obj/machinery/computer/camera_advanced/remove_eye_control(mob/living/user)
 	if(!user)
 		return
@@ -160,7 +166,7 @@
 	ai_detector_visible = FALSE
 	var/sprint = 10
 	var/cooldown = 0
-	var/acceleration = 1
+	var/acceleration = 0
 	var/mob/living/eye_user = null
 	var/obj/machinery/origin
 	var/eye_initialized = 0
@@ -271,6 +277,21 @@
 		C.clear_fullscreen("flash", 3) //Shorter flash than normal since it's an ~~advanced~~ console!
 	else
 		playsound(origin, 'sound/machines/terminal_prompt_deny.ogg', 25, 0)
+
+/datum/action/innate/camera_acceleration
+	name = "Change Acceleration"
+	icon_icon = 'icons/mob/actions/actions_silicon.dmi'
+	button_icon_state = "camera_speed"
+
+/datum/action/innate/camera_acceleration/Activate()
+	if(!target || !isliving(target))
+		return
+	var/mob/living/C = target
+	var/mob/camera/aiEye/remote/remote_eye = C.remote_control
+	if(remote_eye.acceleration == 0)
+		remote_eye.acceleration = 1
+	else
+		remote_eye.acceleration = 0
 
 
 //Used by servants of Ratvar! They let you beam to the station.

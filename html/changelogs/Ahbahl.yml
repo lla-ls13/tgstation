@@ -1,0 +1,4 @@
+author: "Ahbahl"
+delete-after: True
+  - rscadd: "Added action button to enable/disable acceleration."
+  - rsctweak: "Changed acceleration to be off by default."
