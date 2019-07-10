@@ -127,7 +127,7 @@ SUBSYSTEM_DEF(shuttle)
 	var/threshold = CONFIG_GET(number/emergency_shuttle_autocall_threshold)
 	if(!threshold)
 		return
-	
+
 	var/alive = 0
 	for(var/I in GLOB.player_list)
 		var/mob/M = I
@@ -316,6 +316,12 @@ SUBSYSTEM_DEF(shuttle)
 			emergency.request(null, set_coefficient = 2.5)
 			log_game("There is no means of calling the shuttle anymore. Shuttle automatically called.")
 			message_admins("All the communications consoles were destroyed and all AIs are inactive. Shuttle called.")
+
+/datum/controller/subsystem/shuttle/proc/ShiftEndEvac(endmessage,calltime)
+	emergencyCallTime = calltime
+	priority_announce(endmessage, sound='sound/misc/notice2.ogg', sender_override="Station Time Clock")
+	if(EMERGENCY_IDLE_OR_RECALLED)
+		emergency.request(null, set_coefficient = 1)
 
 /datum/controller/subsystem/shuttle/proc/registerHostileEnvironment(datum/bad)
 	hostileEnvironments[bad] = TRUE

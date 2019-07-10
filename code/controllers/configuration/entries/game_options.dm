@@ -371,6 +371,10 @@
 
 /datum/config_entry/flag/enable_night_shifts
 
+/datum/config_entry/number/round_time_limit
+
+/datum/config_entry/number/overtime_time_limit
+
 /datum/config_entry/flag/randomize_shift_time
 
 /datum/config_entry/flag/shift_time_realtime
