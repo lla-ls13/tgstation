@@ -372,8 +372,11 @@
 /datum/config_entry/flag/enable_night_shifts
 
 /datum/config_entry/number/round_time_limit
+	min_val = 0
 
 /datum/config_entry/number/overtime_time_limit
+	min_val = 0
+	max_val = 36000
 
 /datum/config_entry/flag/randomize_shift_time
 
