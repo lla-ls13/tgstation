@@ -98,3 +98,32 @@
 /datum/game_mode/traitor/generate_report()
 	return "Although more specific threats are commonplace, you should always remain vigilant for Syndicate agents aboard your station. Syndicate communications have implied that many \
 		Nanotrasen employees are Syndicate agents with hidden memories that may be activated at a moment's notice, so it's possible that these agents might not even know their positions."
+
+
+//Flextraitor extended mode
+//becomes extended if there are no traitors available and does not draft players
+
+
+/datum/game_mode/traitor/flex
+	name = "flextraitor"
+	config_tag = "flextraitor"
+	report_type = "flextraitor"
+	required_enemies = 0
+	traitors_required = FALSE
+	draft_players = FALSE
+	var/traitor_picked = FALSE	//When a traitor is inevitably picked, gamemode will function as a normal traitor round
+	var/traitor_chance = 25
+
+/datum/game_mode/traitor/flex/make_antag_chance(mob/living/carbon/human/character)
+	if(traitor_picked)
+		..()
+	else
+		if(antag_flag in character.client.prefs.be_special)
+			if(!is_banned_from(character.ckey, list(ROLE_TRAITOR, ROLE_SYNDICATE)) && !QDELETED(character))
+				if(age_check(character.client))
+					if(!(character.job in restricted_jobs))
+						if(prob(traitor_chance))
+							add_latejoin_traitor(character.mind)
+							traitor_picked = TRUE
+						else
+							traitor_chance = min(traitor_chance + 15,100)

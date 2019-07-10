@@ -51,6 +51,8 @@
 	var/gamemode_ready = FALSE //Is the gamemode all set up and ready to start checking for ending conditions.
 	var/setup_error		//What stopepd setting up the mode.
 
+	var/draft_players = TRUE	//For modes that cannot find candidates for antag, the mode will attempt to draft a player anyway.
+
 /datum/game_mode/proc/announce() //Shows the gamemode's name and a fast description.
 	to_chat(world, "<b>The gamemode is: <span class='[announce_span]'>[name]</span>!</b>")
 	to_chat(world, "<b>[announce_text]</b>")
@@ -395,15 +397,16 @@
 
 	drafted = shuffle(drafted) // Will hopefully increase randomness, Donkie
 
-	while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
-		if(drafted.len > 0)
-			applicant = pick(drafted)
-			if(applicant)
-				candidates += applicant
-				drafted.Remove(applicant)
+	if(draft_players)
+		while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
+			if(drafted.len > 0)
+				applicant = pick(drafted)
+				if(applicant)
+					candidates += applicant
+					drafted.Remove(applicant)
 
-		else												// Not enough scrubs, ABORT ABORT ABORT
-			break
+			else												// Not enough scrubs, ABORT ABORT ABORT
+				break
 
 	return candidates		// Returns: The number of people who had the antagonist role set to yes, regardless of recomended_enemies, if that number is greater than recommended_enemies
 							//			recommended_enemies if the number of people with that role set to yes is less than recomended_enemies,
