@@ -61,6 +61,12 @@
 ///Checks to see if the game can be setup and ran with the current number of players or whatnot.
 /datum/game_mode/proc/can_start()
 	var/playerC = 0
+	var/list/min_pop = CONFIG_GET(keyed_list/min_pop)
+	var/list/max_pop = CONFIG_GET(keyed_list/max_pop)
+	if(min_pop[config_tag])
+		required_players = min_pop[config_tag]
+	if(max_pop[config_tag])
+		maximum_players = max_pop[config_tag]
 	for(var/mob/dead/new_player/player in GLOB.player_list)
 		if((player.client)&&(player.ready == PLAYER_READY_TO_PLAY))
 			playerC++
