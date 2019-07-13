@@ -28,7 +28,14 @@
 		return
 	last_irc_check = rtod
 	var/server = CONFIG_GET(string/server)
-	return "[GLOB.round_id ? "Round #[GLOB.round_id]: " : ""][GLOB.clients.len] players on [SSmapping.config.map_name], Mode: [GLOB.master_mode]; Round [SSticker.HasRoundStarted() ? (SSticker.IsRoundInProgress() ? "Active" : "Finishing") : "Starting"] -- [server ? server : "[world.internet_address]:[world.port]"]"
+	return "[GLOB.round_id ? "Round #[GLOB.round_id]: " : ""][GLOB.clients.len] players on [SSmapping.config.map_name], Mode: [GLOB.master_mode]; Round [SSticker.HasRoundStarted() ? (SSticker.IsRoundInProgress() ? "Active" : "Finishing") : "Starting"]; Round Time: [worldtime2text()] -- [server ? server : "[world.internet_address]:[world.port]"]"
+
+/datum/tgs_chat_command/gametip
+	name = "tip"
+	help_text = "Helpful tips to improve your play"
+
+/datum/tgs_chat_command/gametip/Run(datum/tgs_chat_user/sender, params)
+	return SSticker.generate_tip_of_the_round()
 
 /datum/tgs_chat_command/ahelp
 	name = "ahelp"

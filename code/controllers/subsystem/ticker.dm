@@ -395,7 +395,7 @@ SUBSYSTEM_DEF(ticker)
 		var/mob/living/L = I
 		L.notransform = FALSE
 
-/datum/controller/subsystem/ticker/proc/send_tip_of_the_round()
+/datum/controller/subsystem/ticker/proc/generate_tip_of_the_round()
 	var/m
 	if(selected_tip)
 		m = selected_tip
@@ -406,9 +406,14 @@ SUBSYSTEM_DEF(ticker)
 			m = pick(randomtips)
 		else if(memetips.len)
 			m = pick(memetips)
+		return m
 
+/datum/controller/subsystem/ticker/proc/send_tip_of_the_round()
+	var/m = generate_tip_of_the_round()
 	if(m)
 		to_chat(world, "<span class='purple'><b>Tip of the round: </b>[html_encode(m)]</span>")
+		send2chat("Remember... [m]")
+
 
 /datum/controller/subsystem/ticker/proc/check_queue()
 	if(!queued_players.len)
