@@ -114,6 +114,11 @@
 	var/traitor_picked = FALSE	//When a traitor is inevitably picked, gamemode will function as a normal traitor round
 	var/traitor_chance = 25
 
+/datum/game_mode/traitor/flex/post_setup()
+	if(pre_traitors.len > 0)
+		traitor_picked = TRUE
+	return ..()
+
 /datum/game_mode/traitor/flex/make_antag_chance(mob/living/carbon/human/character)
 	if(traitor_picked)
 		..()
